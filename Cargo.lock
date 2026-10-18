@@ -251,6 +251,15 @@ dependencies = [
  "roxmltree",
  "serde",
  "toml",
+ "weft-parts",
+]
+
+[[package]]
+name = "weft-parts"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "toml",
 ]
 
 [[package]]

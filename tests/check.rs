@@ -15,13 +15,13 @@ use weft_boardchecker::board::Board;
 use weft_boardchecker::check::{self, Finding, Input, Severity};
 use weft_boardchecker::host::Host;
 use weft_boardchecker::overlay::Overlay;
-use weft_boardchecker::parts::Library;
 use weft_boardchecker::{bom, ipc356, ipc2581};
+use weft_parts::Library;
 
 const DEMO_XML: &str = include_str!("fixtures/demo.ipc2581.xml");
 const DEMO_356: &str = include_str!("fixtures/demo.ipc356");
 const DEMO_BOM: &str = include_str!("fixtures/demo.bom.csv");
-const TEST_PARTS: &str = include_str!("fixtures/test-parts.toml");
+const TEST_PARTS: &str = include_str!("fixtures/test-sensor.toml");
 const GOOD: &[u8] = include_bytes!("fixtures/good.dtbo");
 const WRONG: &[u8] = include_bytes!("fixtures/wrong.dtbo");
 const CS: &[u8] = include_bytes!("fixtures/cs.dtbo");
@@ -32,7 +32,7 @@ fn demo() -> Board {
 
 fn run(board: &Board, overlay: &[u8]) -> Vec<Finding> {
     let mut parts = Library::builtin().unwrap();
-    parts.add_toml(TEST_PARTS, "test parts").unwrap();
+    parts.add_toml(TEST_PARTS, "test-sensor.toml").unwrap();
     let host = Host::builtin("raspberry-pi-40pin").unwrap();
     let overlay = Overlay::parse(overlay).unwrap();
     let expect = BTreeMap::from([("U3".to_owned(), "HAT ID EEPROM".to_owned())]);

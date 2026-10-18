@@ -36,7 +36,7 @@ pub struct Config {
     pub host: Option<String>,
     /// Reference designator of the host connector on this board.
     pub connector: Option<String>,
-    /// Extra parts libraries, relative to the config file.
+    /// Extra chip files (weft-parts format), relative to the config file.
     #[serde(default)]
     pub parts: Vec<PathBuf>,
     /// Part number overrides by designator, for exports without part numbers.

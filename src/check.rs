@@ -16,7 +16,7 @@ use crate::board::{Board, Component};
 use crate::dtb::{self, Node};
 use crate::host::Host;
 use crate::overlay::{Overlay, Target};
-use crate::parts::{Address, BusKind, Library, Part};
+use weft_parts::{Address, BusKind, Library, Part};
 
 /// How bad a finding is. Ordered from worst to best.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -73,7 +73,7 @@ pub fn check(input: Input<'_>) -> Vec<Finding> {
 struct BoardDevice<'a> {
     refdes: &'a str,
     mpn: &'a str,
-    part: &'a Part,
+    part: Part<'a>,
     bus: usize,
     reg: u32,
 }
@@ -280,9 +280,9 @@ impl<'a> Ctx<'a> {
                 continue;
             };
             let mpn = component.mpn.as_deref().unwrap_or_default();
-            let located = match part.bus {
-                BusKind::I2c => self.locate_i2c(refdes, component, part),
-                BusKind::Spi => self.locate_spi(refdes, part),
+            let located = match part.chip.bus {
+                BusKind::I2c => self.locate_i2c(refdes, component, &part),
+                BusKind::Spi => self.locate_spi(refdes, &part),
             };
             match located {
                 Ok(Some((bus, reg))) => out.push(BoardDevice {
@@ -338,11 +338,10 @@ impl<'a> Ctx<'a> {
         None
     }
 
-    fn pin_net(&self, refdes: &str, part: &Part, role: &str) -> Result<&'a str, String> {
+    fn pin_net(&self, refdes: &str, part: &Part<'_>, role: &str) -> Result<&'a str, String> {
         let pin = part
-            .pins
-            .get(role)
-            .ok_or_else(|| format!("Parts library entry \"{}\" has no `{role}` pin.", part.name))?;
+            .pin(role)
+            .ok_or_else(|| format!("Chip file \"{}\" has no `{role}` pin.", part.name()))?;
         self.input
             .board
             .net_of(refdes, pin)
@@ -353,7 +352,7 @@ impl<'a> Ctx<'a> {
         &mut self,
         refdes: &str,
         component: &Component,
-        part: &Part,
+        part: &Part<'_>,
     ) -> Result<Option<(usize, u32)>, String> {
         let sda = self.gpios(self.pin_net(refdes, part, "sda")?);
         let scl = self.gpios(self.pin_net(refdes, part, "scl")?);
@@ -384,7 +383,11 @@ impl<'a> Ctx<'a> {
         Ok(Some((bus, u32::from(address))))
     }
 
-    fn locate_spi(&mut self, refdes: &str, part: &Part) -> Result<Option<(usize, u32)>, String> {
+    fn locate_spi(
+        &mut self,
+        refdes: &str,
+        part: &Part<'_>,
+    ) -> Result<Option<(usize, u32)>, String> {
         let host = self.input.host;
         let sck = self.gpios(self.pin_net(refdes, part, "sck")?);
         let cs = self.gpios(self.pin_net(refdes, part, "cs")?);
@@ -396,7 +399,7 @@ impl<'a> Ctx<'a> {
         };
         // mosi is the device input, miso its output; either may be absent on simplex parts.
         for (role, other) in [("mosi", "miso"), ("miso", "mosi")] {
-            if !part.pins.contains_key(role) {
+            if !part.package.pins.contains_key(role) {
                 continue;
             }
             let gpios = self.gpios(self.pin_net(refdes, part, role)?);
@@ -460,11 +463,11 @@ impl<'a> Ctx<'a> {
 
     // ----- addresses ----------------------------------------------------------------------
 
-    fn address(&self, refdes: &str, component: &Component, part: &Part) -> Result<u16, String> {
-        let Some(rule) = &part.address else {
+    fn address(&self, refdes: &str, component: &Component, part: &Part<'_>) -> Result<u16, String> {
+        let Some(rule) = &part.chip.address else {
             return Err(format!(
-                "Parts library entry \"{}\" has no address rule.",
-                part.name
+                "Chip file \"{}\" has no address rule.",
+                part.name()
             ));
         };
         match rule {
@@ -519,19 +522,24 @@ impl<'a> Ctx<'a> {
         net: &str,
         refdes: &str,
         component: &Component,
-        part: &Part,
+        part: &Part<'_>,
         own_role: &str,
     ) -> BTreeSet<String> {
         let direct = |net: &str| {
             let mut out = BTreeSet::new();
-            let part_net = |role: &str| part.pins.get(role).and_then(|p| component.pins.get(p));
+            let part_net = |role: &str| {
+                part.package
+                    .pins
+                    .get(role)
+                    .and_then(|p| component.pins.get(p))
+            };
             if self.ground_nets.contains(net) || part_net("gnd").is_some_and(|n| n == net) {
                 out.insert("gnd".to_owned());
             }
             if self.power_nets.contains(net) || part_net("vdd").is_some_and(|n| n == net) {
                 out.insert("vdd".to_owned());
             }
-            for (role, pin) in &part.pins {
+            for (role, pin) in &part.package.pins {
                 if role != own_role
                     && role != "gnd"
                     && role != "vdd"
@@ -623,7 +631,10 @@ impl<'a> Ctx<'a> {
                     .filter(|o| o.bus == dev.bus && o.reg != dev.reg)
                 {
                     let compatible = other.node.strings("compatible");
-                    if dev.part.compatible.iter().any(|c| compatible.contains(c)) {
+                    if compatibles(&dev.part)
+                        .iter()
+                        .any(|c| compatible.contains(c))
+                    {
                         let _ = write!(
                             message,
                             " The overlay has {} at {}; check the address strap.",
@@ -636,7 +647,10 @@ impl<'a> Ctx<'a> {
                 continue;
             };
             let compatible = node.node.strings("compatible");
-            if dev.part.compatible.iter().any(|c| compatible.contains(c)) {
+            if compatibles(&dev.part)
+                .iter()
+                .any(|c| compatible.contains(c))
+            {
                 self.push(
                     Severity::Ok,
                     dev.refdes,
@@ -650,7 +664,7 @@ impl<'a> Ctx<'a> {
                         "{label} is at {place}, but {} there is compatible \"{}\" (expected \"{}\").",
                         node.path,
                         compatible.join("\", \""),
-                        dev.part.compatible.join("\", \"")
+                        compatibles(&dev.part).join("\", \"")
                     ),
                 );
             }
@@ -730,7 +744,13 @@ impl<'a> Ctx<'a> {
     }
 
     fn check_pin(&mut self, dev: &BoardDevice<'a>, prop: &str, gpio: u32) {
-        let Some(role) = dev.part.gpios.get(prop) else {
+        let Some(role) = dev
+            .part
+            .chip
+            .devicetree
+            .as_ref()
+            .and_then(|dt| dt.gpios.get(prop))
+        else {
             self.push(
                 Severity::Warning,
                 dev.refdes,
@@ -742,7 +762,7 @@ impl<'a> Ctx<'a> {
             );
             return;
         };
-        let net = match self.pin_net(dev.refdes, dev.part, role) {
+        let net = match self.pin_net(dev.refdes, &dev.part, role) {
             Ok(net) => net,
             Err(message) => {
                 self.push(
@@ -753,7 +773,7 @@ impl<'a> Ctx<'a> {
                 return;
             }
         };
-        let pin = dev.part.pins.get(role).cloned().unwrap_or_default();
+        let pin = dev.part.package.pins.get(role).cloned().unwrap_or_default();
         let gpios = self.gpios(net);
         if gpios.contains(&gpio) {
             self.push(
@@ -786,6 +806,14 @@ impl<'a> Ctx<'a> {
             );
         }
     }
+}
+
+/// Compatible strings of a part (empty when the chip file has no device tree section).
+fn compatibles<'p>(part: &Part<'p>) -> &'p [String] {
+    part.chip
+        .devicetree
+        .as_ref()
+        .map_or(&[], |dt| dt.compatible.as_slice())
 }
 
 fn is_disabled(node: &Node) -> bool {

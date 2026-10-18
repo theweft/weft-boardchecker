@@ -1,7 +1,7 @@
 # Demo board configuration.
 host = "raspberry-pi-40pin"
 connector = "J1"
-parts = ["test-parts.toml"]
+parts = ["test-sensor.toml"]
 
 [[expect]]
 refdes = "U3"

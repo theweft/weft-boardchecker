@@ -13,8 +13,8 @@ use weft_boardchecker::check::{self, Input, Severity};
 use weft_boardchecker::config::Config;
 use weft_boardchecker::host::Host;
 use weft_boardchecker::overlay::Overlay;
-use weft_boardchecker::parts::Library;
 use weft_boardchecker::{board::Board, bom, ipc356, ipc2581};
+use weft_parts::Library;
 
 /// Checks that a board's I2C/SPI devices, addresses, chip selects and GPIOs match an overlay.
 #[derive(Debug, Parser)]
@@ -38,7 +38,7 @@ struct Args {
     /// Designator of the host connector (overrides the config).
     #[arg(long)]
     connector: Option<String>,
-    /// Extra parts library (repeatable); takes precedence over the built-in one.
+    /// Extra chip file in weft-parts format (repeatable); takes precedence over built-in chips.
     #[arg(long)]
     parts: Vec<PathBuf>,
     /// Also print passed checks and informational notes.
@@ -80,7 +80,8 @@ fn run() -> Result<ExitCode> {
         .map(|p| config.resolve(p))
         .chain(args.parts.clone())
         .collect();
-    for path in extra.iter().rev() {
+    // Later files take precedence: config files first, then --parts.
+    for path in &extra {
         parts.add_toml(&read_text(path)?, &path.display().to_string())?;
     }
 

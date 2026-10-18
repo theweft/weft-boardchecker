@@ -4,8 +4,8 @@
 //! Checks a PCB netlist against a Linux device tree overlay.
 //!
 //! The board comes from a tool-neutral export (IPC-2581, or IPC-D-356A plus a CSV BOM). The overlay
-//! is the compiled `.dtbo`. A host profile maps connector pins to GPIOs and buses, and a parts
-//! library maps part numbers to bus pins and address straps. See [`check::check`].
+//! is the compiled `.dtbo`. A host profile maps connector pins to GPIOs and buses, and the chip
+//! data from `weft-parts` maps part numbers to bus pins and address straps. See [`check::check`].
 
 pub mod board;
 pub mod bom;
@@ -16,4 +16,3 @@ pub mod host;
 pub mod ipc2581;
 pub mod ipc356;
 pub mod overlay;
-pub mod parts;

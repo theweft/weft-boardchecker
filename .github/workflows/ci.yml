@@ -15,7 +15,15 @@ jobs:
       # Pin actions to commit SHAs before the first release (OpenSSF Scorecard); Dependabot keeps them current.
       - uses: actions/checkout@v4
         with:
+          path: weft-boardchecker
+          persist-credentials: false
+      # weft-parts is a path dependency (../weft-parts) until it is published.
+      - uses: actions/checkout@v4
+        with:
+          repository: theweft/weft-parts
+          path: weft-parts
           persist-credentials: false
       - uses: cachix/install-nix-action@v31
       # Same pinned environment as local development.
       - run: nix develop --command just ci
+        working-directory: weft-boardchecker

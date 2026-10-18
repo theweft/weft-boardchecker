@@ -7,7 +7,7 @@ use anyhow::{Context, Result, bail};
 use serde::Deserialize;
 use std::collections::BTreeMap;
 
-use crate::parts::BusKind;
+use weft_parts::BusKind;
 
 const BUILTIN: &[(&str, &str)] = &[(
     "raspberry-pi-40pin",

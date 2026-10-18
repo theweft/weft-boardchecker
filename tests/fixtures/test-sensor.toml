@@ -1,0 +1,13 @@
+# Test-only chip in weft-parts format: a generic SPI sensor.
+name = "Test SPI sensor"
+bus = "spi"
+
+[devicetree]
+compatible = ["acme,testspi"]
+binding = "Documentation/devicetree/bindings/test/acme,testspi.yaml"
+gpios = { reset-gpios = "reset" }
+
+[[package]]
+name = "TEST-7"
+mpn = ["TESTSPI"]
+pins = { cs = "1", sck = "2", mosi = "3", miso = "4", reset = "5", vdd = "6", gnd = "7" }

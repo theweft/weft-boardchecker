@@ -25,6 +25,8 @@ clap = { version = "=4.6.7", default-features = false, features = [
 csv = "=1.4.0"
 roxmltree = "=0.21.1"
 serde = { version = "=1.0.229", features = ["derive"] }
+# Chip data (sibling repository until published).
+weft-parts = { version = "0.1.0", path = "../weft-parts", default-features = false }
 toml = { version = "=1.1.8", default-features = false, features = ["parse", "serde", "std"] }
 
 [lints.rust]

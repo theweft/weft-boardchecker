@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 The weft authors
 // SPDX-License-Identifier: MIT
 
-//! `weft-boardcheck`: checks a PCB netlist against a device tree overlay.
+//! `weft-boardchecker`: checks a PCB netlist against a device tree overlay.
 
 use anyhow::{Context, Result, bail};
 use clap::Parser;
@@ -9,12 +9,12 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
-use weft_boardcheck::check::{self, Input, Severity};
-use weft_boardcheck::config::Config;
-use weft_boardcheck::host::Host;
-use weft_boardcheck::overlay::Overlay;
-use weft_boardcheck::parts::Library;
-use weft_boardcheck::{board::Board, bom, ipc356, ipc2581};
+use weft_boardchecker::check::{self, Input, Severity};
+use weft_boardchecker::config::Config;
+use weft_boardchecker::host::Host;
+use weft_boardchecker::overlay::Overlay;
+use weft_boardchecker::parts::Library;
+use weft_boardchecker::{board::Board, bom, ipc356, ipc2581};
 
 /// Checks that a board's I2C/SPI devices, addresses, chip selects and GPIOs match an overlay.
 #[derive(Debug, Parser)]

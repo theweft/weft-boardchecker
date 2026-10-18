@@ -1,11 +1,11 @@
 [package]
-name = "weft-boardcheck"
+name = "weft-boardchecker"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.99"
 license = "MIT"
 description = "Checks a PCB netlist (IPC-2581 or IPC-D-356A) against a Linux device tree overlay: buses, addresses, chip selects and GPIOs."
-repository = "https://github.com/theweft/weft-boardcheck"
+repository = "https://github.com/theweft/weft-boardchecker"
 homepage = "https://theweft.org"
 readme = "README.md"
 keywords = ["pcb", "device-tree", "ipc-2581", "kicad", "embedded"]

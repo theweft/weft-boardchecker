@@ -1,10 +1,10 @@
-# weft-boardcheck
+# weft-boardchecker
 
 Checks that a PCB and its Linux device tree overlay describe the same hardware. Part of
 [weft](https://theweft.org).
 
 ```text
-weft-boardcheck --config boardcheck.toml --board board.ipc2581.xml --overlay hat.dtbo
+weft-boardchecker --config boardcheck.toml --board board.ipc2581.xml --overlay hat.dtbo
 ```
 
 It reads the board from a tool-neutral export and the overlay as compiled by `dtc`, then reports:

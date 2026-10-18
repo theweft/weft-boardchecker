@@ -11,12 +11,12 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use weft_boardcheck::board::Board;
-use weft_boardcheck::check::{self, Finding, Input, Severity};
-use weft_boardcheck::host::Host;
-use weft_boardcheck::overlay::Overlay;
-use weft_boardcheck::parts::Library;
-use weft_boardcheck::{bom, ipc356, ipc2581};
+use weft_boardchecker::board::Board;
+use weft_boardchecker::check::{self, Finding, Input, Severity};
+use weft_boardchecker::host::Host;
+use weft_boardchecker::overlay::Overlay;
+use weft_boardchecker::parts::Library;
+use weft_boardchecker::{bom, ipc356, ipc2581};
 
 const DEMO_XML: &str = include_str!("fixtures/demo.ipc2581.xml");
 const DEMO_356: &str = include_str!("fixtures/demo.ipc356");

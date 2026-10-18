@@ -1,5 +1,5 @@
 {
-  description = "weft-boardcheck: development environment";
+  description = "weft-boardchecker: development environment";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";

@@ -1,0 +1,15 @@
+// The sensor's chip select moved to GPIO 5: cs-gpios on the bus maps CS1 there.
+/dts-v1/;
+/plugin/;
+
+&spi0 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	cs-gpios = <&gpio 8 1>, <&gpio 5 1>;
+	status = "okay";
+
+	sensor@1 {
+		compatible = "acme,testspi";
+		reg = <1>;
+	};
+};

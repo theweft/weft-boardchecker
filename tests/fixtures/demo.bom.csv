@@ -1,0 +1,8 @@
+"Reference","Value","Footprint","Qty","Manufacturer Part Number"
+"J1","HDR40","fp","1",""
+"U1","ADS","fp","1","ADS1115IDGSR"
+"U2","DAC","fp","1","MCP4728-E/UN"
+"U3","EEPROM","fp","1","24LC32AT-I/SN"
+"U4","SENSOR","fp","1","TESTSPI-1"
+"R1,R2","R10K","fp","2",""
+"J2","TERM2","fp","1",""

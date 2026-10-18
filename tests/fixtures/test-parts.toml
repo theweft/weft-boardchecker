@@ -1,0 +1,8 @@
+# Test-only part: a generic SPI sensor.
+[[part]]
+name = "Test SPI sensor"
+mpn = ["TESTSPI"]
+compatible = ["acme,testspi"]
+bus = "spi"
+pins = { cs = "1", sck = "2", mosi = "3", miso = "4", reset = "5", vdd = "6", gnd = "7" }
+gpios = { reset-gpios = "reset" }

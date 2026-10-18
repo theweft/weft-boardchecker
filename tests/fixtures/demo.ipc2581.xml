@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic demo board for tests; structure follows KiCad's IPC-2581 exporter. -->
+<IPC-2581 revision="C" xmlns="http://webstds.ipc.org/2581" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Content roleRef="Owner"><FunctionMode mode="ASSEMBLY"/><StepRef name="demo"/><BomRef name="demo_bom"/><AvlRef name="Primary_Vendor_List"/></Content>
+  <Bom name="demo_bom">
+    <BomHeader assembly="demo" revision="1.0"><StepRef name="demo"/></BomHeader>
+    <BomItem OEMDesignNumberRef="HDR40" quantity="1" pinCount="22" category="ELECTRICAL">
+      <RefDes name="J1" populate="true" layerRef="F.Cu"/>
+      <Characteristics category="ELECTRICAL">
+        <Textual definitionSource="KICAD" textualCharacteristicName="Value" textualCharacteristicValue="HDR40"/>
+      </Characteristics>
+    </BomItem>
+    <BomItem OEMDesignNumberRef="ADS" quantity="1" pinCount="7" category="ELECTRICAL">
+      <RefDes name="U1" populate="true" layerRef="F.Cu"/>
+      <Characteristics category="ELECTRICAL">
+        <Textual definitionSource="KICAD" textualCharacteristicName="Value" textualCharacteristicValue="ADS"/>
+      </Characteristics>
+    </BomItem>
+    <BomItem OEMDesignNumberRef="DAC" quantity="1" pinCount="5" category="ELECTRICAL">
+      <RefDes name="U2" populate="true" layerRef="F.Cu"/>
+      <Characteristics category="ELECTRICAL">
+        <Textual definitionSource="KICAD" textualCharacteristicName="Value" textualCharacteristicValue="DAC"/>
+      </Characteristics>
+    </BomItem>
+    <BomItem OEMDesignNumberRef="EEPROM" quantity="1" pinCount="8" category="ELECTRICAL">
+      <RefDes name="U3" populate="true" layerRef="F.Cu"/>
+      <Characteristics category="ELECTRICAL">
+        <Textual definitionSource="KICAD" textualCharacteristicName="Value" textualCharacteristicValue="EEPROM"/>
+      </Characteristics>
+    </BomItem>
+    <BomItem OEMDesignNumberRef="SENSOR" quantity="1" pinCount="7" category="ELECTRICAL">
+      <RefDes name="U4" populate="true" layerRef="F.Cu"/>
+      <Characteristics category="ELECTRICAL">
+        <Textual definitionSource="KICAD" textualCharacteristicName="Value" textualCharacteristicValue="SENSOR"/>
+        <Textual definitionSource="KICAD" textualCharacteristicName="MPN" textualCharacteristicValue="TESTSPI-1"/>
+      </Characteristics>
+    </BomItem>
+    <BomItem OEMDesignNumberRef="R10K" quantity="2" pinCount="2" category="ELECTRICAL">
+      <RefDes name="R1" populate="true" layerRef="F.Cu"/>
+      <RefDes name="R2" populate="true" layerRef="F.Cu"/>
+      <Characteristics category="ELECTRICAL">
+        <Textual definitionSource="KICAD" textualCharacteristicName="Value" textualCharacteristicValue="R10K"/>
+      </Characteristics>
+    </BomItem>
+    <BomItem OEMDesignNumberRef="TERM2" quantity="1" pinCount="2" category="ELECTRICAL">
+      <RefDes name="J2" populate="true" layerRef="F.Cu"/>
+      <Characteristics category="ELECTRICAL">
+        <Textual definitionSource="KICAD" textualCharacteristicName="Value" textualCharacteristicValue="TERM2"/>
+      </Characteristics>
+    </BomItem>
+  </Bom>
+  <Ecad name="demo">
+    <CadHeader units="MILLIMETER"/>
+    <CadData>
+      <Step name="demo">
+        <Component refDes="J1" part="HDR40" layerRef="F.Cu" mountType="SMT"><Location x="0" y="0"/></Component>
+        <Component refDes="U1" part="ADS" layerRef="F.Cu" mountType="SMT"><Location x="0" y="0"/></Component>
+        <Component refDes="U2" part="DAC" layerRef="F.Cu" mountType="SMT"><Location x="0" y="0"/></Component>
+        <Component refDes="U3" part="EEPROM" layerRef="F.Cu" mountType="SMT"><Location x="0" y="0"/></Component>
+        <Component refDes="U4" part="SENSOR" layerRef="F.Cu" mountType="SMT"><Location x="0" y="0"/></Component>
+        <Component refDes="R1" part="R10K" layerRef="F.Cu" mountType="SMT"><Location x="0" y="0"/></Component>
+        <Component refDes="R2" part="R10K" layerRef="F.Cu" mountType="SMT"><Location x="0" y="0"/></Component>
+        <Component refDes="J2" part="TERM2" layerRef="F.Cu" mountType="SMT"><Location x="0" y="0"/></Component>
+        <LogicalNet name="+3V3"><PinRef componentRef="J1" pin="1"/><PinRef componentRef="J1" pin="17"/><PinRef componentRef="U1" pin="8"/><PinRef componentRef="U2" pin="1"/><PinRef componentRef="U3" pin="8"/><PinRef componentRef="U4" pin="6"/><PinRef componentRef="R2" pin="2"/></LogicalNet>
+        <LogicalNet name="+5V"><PinRef componentRef="J1" pin="2"/><PinRef componentRef="J1" pin="4"/></LogicalNet>
+        <LogicalNet name="ADC_ALERT"><PinRef componentRef="J1" pin="16"/><PinRef componentRef="U1" pin="2"/></LogicalNet>
+        <LogicalNet name="ADC_INPUT_CHANNEL_0"><PinRef componentRef="U1" pin="4"/><PinRef componentRef="J2" pin="1"/></LogicalNet>
+        <LogicalNet name="DAC_OUT_A"><PinRef componentRef="U2" pin="6"/><PinRef componentRef="J2" pin="2"/></LogicalNet>
+        <LogicalNet name="EE_A0"><PinRef componentRef="U3" pin="1"/><PinRef componentRef="R1" pin="1"/></LogicalNet>
+        <LogicalNet name="GND"><PinRef componentRef="J1" pin="6"/><PinRef componentRef="J1" pin="9"/><PinRef componentRef="J1" pin="14"/><PinRef componentRef="J1" pin="20"/><PinRef componentRef="J1" pin="25"/><PinRef componentRef="J1" pin="30"/><PinRef componentRef="J1" pin="34"/><PinRef componentRef="J1" pin="39"/><PinRef componentRef="U1" pin="1"/><PinRef componentRef="U1" pin="3"/><PinRef componentRef="U2" pin="10"/><PinRef componentRef="U3" pin="2"/><PinRef componentRef="U3" pin="3"/><PinRef componentRef="U3" pin="4"/><PinRef componentRef="U3" pin="7"/><PinRef componentRef="U4" pin="7"/><PinRef componentRef="R1" pin="2"/></LogicalNet>
+        <LogicalNet name="I2C1_SCL"><PinRef componentRef="J1" pin="5"/><PinRef componentRef="U1" pin="10"/><PinRef componentRef="U2" pin="2"/></LogicalNet>
+        <LogicalNet name="I2C1_SDA"><PinRef componentRef="J1" pin="3"/><PinRef componentRef="U1" pin="9"/><PinRef componentRef="U2" pin="3"/></LogicalNet>
+        <LogicalNet name="ID_SC"><PinRef componentRef="J1" pin="28"/><PinRef componentRef="U3" pin="6"/></LogicalNet>
+        <LogicalNet name="ID_SD"><PinRef componentRef="J1" pin="27"/><PinRef componentRef="U3" pin="5"/></LogicalNet>
+        <LogicalNet name="SENSOR_RESET"><PinRef componentRef="J1" pin="15"/><PinRef componentRef="U4" pin="5"/><PinRef componentRef="R2" pin="1"/></LogicalNet>
+        <LogicalNet name="SPI0_CE1"><PinRef componentRef="J1" pin="26"/><PinRef componentRef="U4" pin="1"/></LogicalNet>
+        <LogicalNet name="SPI0_MISO"><PinRef componentRef="J1" pin="21"/><PinRef componentRef="U4" pin="4"/></LogicalNet>
+        <LogicalNet name="SPI0_MOSI"><PinRef componentRef="J1" pin="19"/><PinRef componentRef="U4" pin="3"/></LogicalNet>
+        <LogicalNet name="SPI0_SCLK"><PinRef componentRef="J1" pin="23"/><PinRef componentRef="U4" pin="2"/></LogicalNet>
+      </Step>
+    </CadData>
+  </Ecad>
+  <Avl name="Primary_Vendor_List">
+    <AvlHeader title="BOM" source="KiCad" author="test" datetime="2026-10-18T00:00:00" version="1"/>
+    <AvlItem OEMDesignNumber="ADS"><AvlVmpn qualified="false" chosen="false"><AvlMpn name="ADS1115IDGSR"/><AvlVendor enterpriseRef="UNKNOWN"/></AvlVmpn></AvlItem>
+    <AvlItem OEMDesignNumber="DAC"><AvlVmpn qualified="false" chosen="false"><AvlMpn name="MCP4728-E/UN"/><AvlVendor enterpriseRef="UNKNOWN"/></AvlVmpn></AvlItem>
+    <AvlItem OEMDesignNumber="EEPROM"><AvlVmpn qualified="false" chosen="false"><AvlMpn name="24LC32AT-I/SN"/><AvlVendor enterpriseRef="UNKNOWN"/></AvlVmpn></AvlItem>
+  </Avl>
+</IPC-2581>

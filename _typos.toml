@@ -1,0 +1,6 @@
+# Project words the spell checker does not know.
+[default.extend-words]
+
+[files]
+# Compiled device tree blobs.
+extend-exclude = ["*.dtbo"]

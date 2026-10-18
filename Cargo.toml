@@ -1,0 +1,47 @@
+[package]
+name = "weft-boardcheck"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99"
+license = "MIT"
+description = "Checks a PCB netlist (IPC-2581 or IPC-D-356A) against a Linux device tree overlay: buses, addresses, chip selects and GPIOs."
+repository = "https://github.com/theweft/weft-boardcheck"
+homepage = "https://theweft.org"
+readme = "README.md"
+keywords = ["pcb", "device-tree", "ipc-2581", "kicad", "embedded"]
+categories = ["command-line-utilities", "embedded", "development-tools"]
+
+# Host-side developer tool, not part of the trusted computing base. Exact versions all the same:
+# updates are deliberate (Dependabot PR + review).
+[dependencies]
+anyhow = "=1.0.104"
+clap = { version = "=4.6.7", default-features = false, features = [
+  "std",
+  "derive",
+  "help",
+  "usage",
+  "error-context",
+] }
+csv = "=1.4.0"
+roxmltree = "=0.21.1"
+serde = { version = "=1.0.229", features = ["derive"] }
+toml = { version = "=1.1.8", default-features = false, features = ["parse", "serde", "std"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+unused_qualifications = "warn"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+# Malformed exports and blobs must produce errors, not panics.
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+indexing_slicing = "deny"
+todo = "deny"
+unimplemented = "deny"
+dbg_macro = "deny"
+module_name_repetitions = "allow"
+similar_names = "allow"
+must_use_candidate = "allow"

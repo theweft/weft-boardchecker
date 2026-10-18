@@ -1,0 +1,37 @@
+// Overlay with typical mistakes: wrong ADC address, wrong DAC driver, wrong reset GPIO and a
+// device that is not on the board.
+/dts-v1/;
+/plugin/;
+
+&i2c1 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+
+	adc@49 {
+		compatible = "ti,ads1115";
+		reg = <0x49>;
+	};
+
+	dac@60 {
+		compatible = "microchip,mcp4725";
+		reg = <0x60>;
+	};
+
+	ghost@30 {
+		compatible = "acme,ghost";
+		reg = <0x30>;
+	};
+};
+
+&spi0 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+
+	sensor@1 {
+		compatible = "acme,testspi";
+		reg = <1>;
+		reset-gpios = <&gpio 24 1>;
+	};
+};

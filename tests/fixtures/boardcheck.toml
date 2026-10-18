@@ -1,0 +1,8 @@
+# Demo board configuration.
+host = "raspberry-pi-40pin"
+connector = "J1"
+parts = ["test-parts.toml"]
+
+[[expect]]
+refdes = "U3"
+reason = "HAT ID EEPROM, read by the Pi firmware"

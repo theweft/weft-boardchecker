@@ -1,0 +1,72 @@
+# Raspberry Pi 40-pin header (Pi 2 and later, including Pi 4 and Pi 5).
+# Pin numbers are header pins; GPIO numbers are BCM numbers as used in the device tree.
+
+name = "raspberry-pi-40pin"
+# Label of the GPIO controller that overlays reference (<&gpio 22 0>).
+gpio_label = "gpio"
+# #gpio-cells and #interrupt-cells of that controller.
+gpio_cells = 2
+interrupt_cells = 2
+
+ground_pins = ["6", "9", "14", "20", "25", "30", "34", "39"]
+
+[power_pins]
+"3V3" = ["1", "17"]
+"5V" = ["2", "4"]
+
+[gpio_pins]
+"3" = 2
+"5" = 3
+"7" = 4
+"8" = 14
+"10" = 15
+"11" = 17
+"12" = 18
+"13" = 27
+"15" = 22
+"16" = 23
+"18" = 24
+"19" = 10
+"21" = 9
+"22" = 25
+"23" = 11
+"24" = 8
+"26" = 7
+"27" = 0
+"28" = 1
+"29" = 5
+"31" = 6
+"32" = 12
+"33" = 13
+"35" = 19
+"36" = 16
+"37" = 26
+"38" = 20
+"40" = 21
+
+# Buses at their default pins. `labels` are the overlay targets that mean this bus.
+# For SPI, `cs` lists the chip-select GPIOs by index (reg = <index>); an overlay that sets
+# cs-gpios on the bus replaces this list.
+
+[[bus]]
+labels = ["i2c1", "i2c_arm"]
+kind = "i2c"
+signals = { sda = 2, scl = 3 }
+
+[[bus]]
+# ID_SD/ID_SC: reserved for the HAT ID EEPROM, read by the Pi firmware.
+labels = ["i2c0", "i2c_vc", "i2c0if"]
+kind = "i2c"
+signals = { sda = 0, scl = 1 }
+
+[[bus]]
+labels = ["spi0"]
+kind = "spi"
+signals = { sck = 11, mosi = 10, miso = 9 }
+cs = [8, 7]
+
+[[bus]]
+labels = ["spi1"]
+kind = "spi"
+signals = { sck = 21, mosi = 20, miso = 19 }
+cs = [18, 17, 16]

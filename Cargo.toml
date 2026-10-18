@@ -1,6 +1,6 @@
 [package]
 name = "weft-boardchecker"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2024"
 rust-version = "1.99"
 license = "MIT"
@@ -8,6 +8,8 @@ description = "Checks a PCB netlist (IPC-2581 or IPC-D-356A) against a Linux dev
 repository = "https://github.com/theweft/weft-boardchecker"
 homepage = "https://theweft.org"
 readme = "README.md"
+# Published files only: no CI, Nix or editor configuration.
+include = ["src/**", "tests/**", "data/**", "README.md", "SECURITY.md", "LICENSE", "LICENSES/**"]
 keywords = ["pcb", "device-tree", "ipc-2581", "kicad", "embedded"]
 categories = ["command-line-utilities", "embedded", "development-tools"]
 
@@ -26,7 +28,7 @@ csv = "=1.4.0"
 roxmltree = "=0.21.1"
 serde = { version = "=1.0.229", features = ["derive"] }
 # Chip data (sibling repository until published).
-weft-parts = { version = "0.1.0", path = "../weft-parts", default-features = false }
+weft-parts = { version = "=0.0.1", path = "../weft-parts", default-features = false }
 toml = { version = "=1.1.8", default-features = false, features = ["parse", "serde", "std"] }
 
 [lints.rust]

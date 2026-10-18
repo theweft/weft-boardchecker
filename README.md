@@ -1,5 +1,7 @@
 # weft-boardchecker
 
+> **Status: experimental (0.0.x).** APIs and formats change without notice. Not for production use yet.
+
 Checks that a PCB and its Linux device tree overlay describe the same hardware. Part of
 [weft](https://theweft.org).
 
